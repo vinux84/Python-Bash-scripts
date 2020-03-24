@@ -11,7 +11,7 @@ echo "$INTSPEED"
 
 if [[ ${INTSPEED} -lt 50 ]]
 then 
-	echo "You internet speed sucks"
+	echo "You internet speed is slow"
 
 elif [[ ${INTSPEEDJ} -gt 75 ]]
 then
