@@ -9,3 +9,15 @@ DATE=$(date '+%m-%d-%Y %r')
 echo -e "DATE: ${DATE}\n"
 echo "$INTSPEED"
 
+if [[ ${INTSPEED} -lt 50 ]]
+then 
+	echo "You internet speed sucks"
+
+elif [[ ${INTSPEEDJ} -gt 75 ]]
+then
+	echo "You have good speed" 
+else
+	echo "You have ok speed"
+fi
+
+	 
