@@ -62,8 +62,8 @@ fi
 clear
 echo "\n\n###############################################################################################################
       \nPower down the node and take the node out of recovery mode
+      \nUnplug the micro-usb from the OTG port
       \nPlug an ethernet cable from the Linux machine into port 1
-      \nYou will also no longer need to have the micro-usb in the OTG port
 
       \n######\n\nTIP: the next part is configuring the node and assigning an IP 
 while you do the next part, if you need to flash several nodes
@@ -93,7 +93,7 @@ if [ -z "$IP_CHECK" ]; then
 	exit
 else
 	sleep 2
-	echo "\n\nLinux machine IP changed continuing to ping"
+	echo "\n\nConfiguration machine IP changed, pinging node to confirm...."
         sleep 2
 fi
 
@@ -135,7 +135,7 @@ bash /home/cainthus/Desktop/Node_Configuration/change_ip.sh ~/Desktop/Node_Confi
 # need to figure out how to open another terminal to ping node
 
 sudo ifconfig wlp0s20f3 10.0.1.101 netmask 255.255.255.0      # this code just needs to change to the Eth. interface name on linux machine
-							      # Also need to split up prod_ip_node (ip address) to assign pc in same subnet
+							      # Also need to split up prod_ip_node, so like 10.0.x.25 (ip address) to assign pc in same subnet
 IP_CHECK=$(ifconfig | grep 'inet 10.0.1.101  netmask 255.255.255.0  broadcast 192.168.8.255')
 
 if [ -z "$IP_CHECK" ]; then
