@@ -1,5 +1,7 @@
-# this requires that you have a linux machine and have set up multiple interfaces for the default subnet of the node, and the new subnet of the intended IP address for node. and a micro usb plugged into the configuration
-# Linux Machine
+# this requires that you have a linux machine and have set up multiple interfaces for the default subnet of the node, the new subnet of the intended IP address for node. You will also need a micro usb 
+# plugged into the configuration Linux Machine
+
+# install sshpass and updates as well 
 
 #!/bin/sh
 
@@ -93,12 +95,12 @@ else
         exit
 fi
 
-if echo "nvidia" | sudo -S ssh-copy-id -i ~/Desktop/Node_Configuration/ssh_key nvidia@192.168.8.101 ; then      # I added "sudo -S" to the command. have not tried -  the password pipe didn't work. had to manually put in pw. maybe a expect block would work better.
+if sshpass -p 'nvidia' ssh-copy-id -i ~/Desktop/Node_Configuration/ssh_key nvidia@192.168.8.101 ; then
         sleep 2
         echo -n "\nSSH key sent to node.."
         sleep 4
 else
-        echo "\nSSH key was not sent to node, something is wrong. exiting now"
+        echo -n "\nSSH key was not sent to node, something is wrong. exiting now"
         sleep 2
         exit 1
 fi
@@ -143,8 +145,8 @@ fi
 
 echo "\nFormatting SSD now, this will take a few minutes...."
 sleep 2
-# below will ask for a yes, as its the first time sshing in.
-ssh -i ~/Desktop/Node_Configuration/ssh_key nvidia@$prod_ip_node "bash -s" << EOF
+#check a bash -S on config machine to see if that was used orginally. dont think so
+ssh -oStrictHostKeyChecking=accept-new -i ~/Desktop/Node_Configuration/ssh_key nvidia@$prod_ip_node << EOF
 	sudo wipefs -a /dev/sda
 	sudo parted /dev/sda mklabel gpt
 	sudo parted /dev/sda mkpart primary ext4 0% 100%
@@ -164,7 +166,7 @@ scp -i ~/Desktop/Node_Configuration/ssh_key /home/cainthus/Desktop/Node_Configur
 echo "\nBacking up boot settings and rebooting..."
 sleep 2
 
-ssh -i ~/Desktop/Node_Configuration/ssh_key nvidia@$prod_ip_node "bash -s" << EOF
+ssh -i ~/Desktop/Node_Configuration/ssh_key nvidia@$prod_ip_node << EOF
 	sudo cp /boot/extlinux/extlinux.conf /boot/extlinux/extlinux.conf.backup
  	sudo mv boot_settings /boot/extlinux/extlinux.conf
   	sudo reboot
