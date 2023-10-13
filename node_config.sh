@@ -4,57 +4,55 @@
 # install sshpass and updates as well 
 
 #!/bin/sh
-
-clear 
+clear
 echo "\n\n################################################################################################################
-      \n\n			                       NODE CONFIGURATION
+      \n\n                                             NODE CONFIGURATION
       \n\n################################################################################################################
-
-      \n\nThe node must be in recovery mode before any configurations can happen. 
-This can be done by switching the tab in the same direction of the arrow while the node is powered down, it is located next to the OTG port.
-
-      \n\nNext, Plug in a micro-usb in the OTG port on the node. Then power the device up using a 12v power supply. 
+      \n\nThe node must be in recovery mode before any configurations can happen.
+This can be done by switching the tab in the same direction of the arrow
+while the node is powered down, it is located next to the OTG port.
+      \n\nNext, Plug in a micro-usb in the OTG port on the node and the other side to the configuration machine.
+Then power the device up using a 12v power supply.
       \n\n"
-
+      
 while true; do
-    read -p "Are you ready to configure the node and begin the flash process? : " conf_input
+    read -p "Are you ready to configure the node and begin the flash process? [yes/no]: " conf_input
     case $conf_input in
-        [Yy]* ) echo "\nContinuing to flash"; break;;
-        [Nn]* ) echo "\nExiting process"; exit 1;;
-        * ) echo "Please answer yes or no.";;
+        [Yy]* ) echo "\n"; break;;
+        [Nn]* ) echo "\nExiting Configuration\n"; exit 1;;
+        * ) echo "\nPlease answer yes or no.\n";;
     esac
 done
 
-echo -n "\n\nChecking Node."
+echo -n "\nChecking node"
+
 x=1
-while [ $x -le 20 ] 
+while [ $x -le 20 ]
 do
         echo -n "."
         sleep .2
         x=$(( $x + 1 ))
 done
 
-LSUSB_CHECK=$(lsusb | grep 'NVIDIA') 
+LSUSB_CHECK=$(lsusb | grep -w 'NVIDIA')
 
 if [ -z "$LSUSB_CHECK" ]; then
-	sleep 2
-	echo "\n\nNode not recognized for some reason, exiting now"
-	sleep 2
-	exit
+        sleep 2
+        echo "\n\nNode not recognized for some reason, check your OTG connection. Exiting now.\n"
+        exit 1
 else
-	sleep 2
-	echo "\n\nNode recognized, flashing node now, This should take about 25 mins"
-	sleep 2
-fi 	
+        sleep 2
+        echo "\n\nNode recognized. Flashing node now, This should take about 25 mins"
+        sleep 2
+fi
 
-if cd ~/Desktop/Node_Configuration/Firmware/v0.1/Linux_for_Tegra && sudo ./flash.sh -r -k APP jetson-tx2 mmcblk0p1 ; then                 
-	sleep 2						       
-	echo -n "\n\nFlash completed successfully!"
-	sleep 4
+if cd ~/Desktop/Node_Configuration/Firmware/v0.1/Linux_for_Tegra && sudo ./flash.sh -r -k APP jetson-tx2 mmcblk0p1 ; then
+        sleep 2
+        echo -n "\n\nFlash completed successfully!\n"
+        sleep 4
 else
-	echo "\n\nFlash was not successful, exiting now"
-	sleep 2
-	exit
+        echo "\n\nFlash was not successful, exiting now\n"
+        exit 1
 fi
 
 clear
