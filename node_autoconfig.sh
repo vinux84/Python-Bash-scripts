@@ -66,7 +66,7 @@ else
 	sleep 2
 fi
 
-if cd ~/Desktop/Node_Configuration/Firmware/v0.1/Linux_for_Tegra && echo cainthus | sudo -S ./flash.sh -r -k APP jetson-tx2 mmcblk0p1 ; then
+if cd ~/Desktop/Node_Configuration/Firmware/v0.1/Linux_for_Tegra && echo **** | sudo -S ./flash.sh -r -k APP jetson-tx2 mmcblk0p1 ; then
 	sleep 2						      
 	echo "\n\nFlash completed successfully!"
 	sleep 4
@@ -104,7 +104,7 @@ pingcheck 192.168.8.101
 
 echo "\nSending SSH key..\n"
 
-if sshpass -p 'nvidia' ssh-copy-id -i ~/Desktop/Node_Configuration/ssh_key nvidia@192.168.8.101 ; then
+if sshpass -p '******' ssh-copy-id -i ~/Desktop/Node_Configuration/ssh_key nvidia@192.168.8.101 ; then
         sleep 2
         echo "\nSSH key sent to node.\n"
         sleep 4
@@ -120,7 +120,7 @@ read -p "Please enter in production IP address for node's gateway [10.0.x.254]: 
 echo "\nChanging default IP address to production IP and gateway IP address.\n"
 sleep 2
 
-if bash /home/cainthus/Desktop/Node_Configuration/change_ip.sh ~/Desktop/Node_Configuration/ssh_key $prod_ip_node/24 255.255.255.0 $prod_ip_router ; then
+if bash /home/********/Desktop/Node_Configuration/change_ip.sh ~/Desktop/Node_Configuration/ssh_key $prod_ip_node/24 255.255.255.0 $prod_ip_router ; then
         sleep 2
         echo "\nNode IP change was not successful, exiting now."
         exit 1
@@ -160,7 +160,7 @@ echo "\nSending boot settings to node.\n"
 
 sleep 2
 
-scp -i ~/Desktop/Node_Configuration/ssh_key /home/cainthus/Desktop/Node_Configuration/boot_settings nvidia@$prod_ip_node:~/
+scp -i ~/Desktop/Node_Configuration/ssh_key /home/****/Desktop/Node_Configuration/boot_settings nvidia@$prod_ip_node:~/
 
 echo "\nBacking up boot settings and restarting node.\n"
 
